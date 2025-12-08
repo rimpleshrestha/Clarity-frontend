@@ -4,7 +4,14 @@ import HomePage from "./page";
 import Signup from "./signup/page";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const App = () => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 60,
+        gcTime: 5 * 60 * 60,
+      },
+    },
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
