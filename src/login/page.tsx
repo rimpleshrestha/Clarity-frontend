@@ -17,12 +17,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { loginUser } from "@/signup/api";
 import { loginSchema, type LoginType } from "@/utils/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeClosedIcon, EyeIcon } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { EyeClosedIcon, EyeIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const Login = () => {
   const form = useForm<LoginType>({
@@ -32,9 +35,23 @@ const Login = () => {
     },
     resolver: zodResolver(loginSchema),
   });
-
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: loginUser,
+  });
   const onSubmit = (data: LoginType) => {
-    console.log(data);
+    mutate(data, {
+      onSuccess: (res) => {
+        toast.success(res.message);
+        localStorage.setItem("access_token", res.data?.access_token as string);
+        navigate("/dashboard");
+      },
+      onError: (error) => {
+        console.error(error.message);
+        toast.error(error.message);
+      },
+    });
   };
   const [togglePasswordVisibility, setTogglePasswordVisibility] =
     useState<boolean>(false);
@@ -120,8 +137,9 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
-                  Continue
+                <Button disabled={isPending} type="submit" className="w-full">
+                  Continue{" "}
+                  {isPending && <Loader2 className="animate-spin size-4" />}
                 </Button>
               </form>
             </Form>
