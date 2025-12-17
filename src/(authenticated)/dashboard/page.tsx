@@ -59,7 +59,7 @@ const Dashboard = () => {
     <div className="p-10">
       <div className="flex my-6 justify-end w-full">
         <Button type="submit" disabled={isPending} form="dashboard-form">
-          Save Prompt {isPending && <Loader2 className="ml-2 animate-spin" />}
+          Save Journal {isPending && <Loader2 className="ml-2 animate-spin" />}
         </Button>
       </div>
 

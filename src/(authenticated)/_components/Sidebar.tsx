@@ -1,17 +1,20 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { NavLink, useLocation } from "react-router";
+
+
 const navlinks = [
   {
     name: "Entries",
     link: "/dashboard/entries",
+    icon: "/entries_icon.svg",
   },
   {
     name: "Prompts",
     link: "/dashboard/prompts/",
   },
   {
-    name: "Favorates",
+    name: "Favorites",
     link: "/dashboard/favorates/",
   },
   {

@@ -8,12 +8,12 @@ const SettingPage = () => {
     <main className="p-20 ">
       <h1 className="text-3xl font-semibold text-[#699BEC]">Settings</h1>
       <span className="text-muted-foreground">
-        Customize you're journaling experience
+        Customize your journaling experience
       </span>
       <div className="flex flex-col gap-10 mt-20 ">
         <SettingCard
           title="Appearance"
-          description="Choose youre prefered theme"
+          description="Choose your preferred theme"
         >
           <div className="flex w-full justify-between gap-2 items-center">
             <Label>Dark Mode</Label>
@@ -22,7 +22,7 @@ const SettingPage = () => {
         </SettingCard>
         <SettingCard
           title="Daily Reminder"
-          description="Choose youre prefered theme"
+          description="Get reminded to journal every day"
         >
           <div className="flex w-full justify-between gap-2 items-center">
             {" "}
@@ -32,7 +32,7 @@ const SettingPage = () => {
         </SettingCard>
         <SettingCard
           title="Privacy & Security"
-          description="Choose youre prefered theme"
+          description="Protect your journal with a PIN"
         >
           <div className="flex w-full justify-between gap-2 items-center">
             <Label>Enable Pin</Label>
