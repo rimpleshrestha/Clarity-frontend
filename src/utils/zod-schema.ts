@@ -22,8 +22,13 @@ const journalSchema = z.object({
   tag_id: z.string().min(1, "Tag is required"),
 });
 
+const otpSchema = z.object({
+  pin: z.string().regex(/^\d{4}$/, "OTP must be a 4-digit number"),
+});
+
+type OtpFormValues = z.infer<typeof otpSchema>;
 type JournalType = z.infer<typeof journalSchema>;
 type SignupType = z.infer<typeof signupSchema>;
 
-export { journalSchema, loginSchema, signupSchema };
-export type { JournalType, LoginType, SignupType };
+export { journalSchema, loginSchema, signupSchema, otpSchema };
+export type { JournalType, LoginType, SignupType, OtpFormValues };

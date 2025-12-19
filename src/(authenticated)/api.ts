@@ -41,6 +41,10 @@ const saveJournal = async (id: number) => {
   const res = await api.patch(`/journal/${id}/save`);
   return res.data;
 };
+const upsertPib = async (data: any) => {
+  const res = await api.post(`/upsert-pin`, data);
+  return res.data;
+};
 const getSavedJournals = async () => {
   const res = await api.get("/journal", {
     params: {
@@ -58,4 +62,5 @@ export {
   deleteJournal,
   saveJournal,
   getSavedJournals,
+  upsertPib,
 };

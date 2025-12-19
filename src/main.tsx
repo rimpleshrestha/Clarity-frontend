@@ -7,6 +7,7 @@ import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 import { Toaster } from "./components/ui/sonner.tsx";
 import { JournalUnlockProvider } from "./contexts/LockContext.tsx";
 import { UnlockModal } from "./components/UnlockModel.tsx";
+import { ThemeProvider } from "./contexts/ThemeContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
         );
       }}
     >
+      {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> */}
       <JournalUnlockProvider>
         <BrowserRouter>
           <App />
@@ -27,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
         </BrowserRouter>
         <UnlockModal />
       </JournalUnlockProvider>
+      {/* </ThemeProvider> */}
     </ErrorBoundary>
   </StrictMode>
 );

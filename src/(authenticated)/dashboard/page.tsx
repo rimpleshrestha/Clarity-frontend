@@ -17,6 +17,7 @@ import { journalSchema, type JournalType } from "@/utils/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useDailyPromptStore } from "@/utils/store";
 
 const Dashboard = () => {
   const form = useForm<JournalType>({
@@ -31,8 +32,20 @@ const Dashboard = () => {
 
   const [moodQuery, tagQuery] = useQueries({
     queries: [
-      { queryKey: ["moods"], queryFn: getMoods },
-      { queryKey: ["tags"], queryFn: getTags },
+      {
+        queryKey: ["moods"],
+        queryFn: getMoods,
+        staleTime: Infinity,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+      },
+      {
+        queryKey: ["tags"],
+        queryFn: getTags,
+        staleTime: Infinity,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+      },
     ],
   });
 
@@ -54,6 +67,7 @@ const Dashboard = () => {
       },
     });
   };
+  const { question, category } = useDailyPromptStore();
 
   return (
     <div className="p-10">
@@ -64,15 +78,14 @@ const Dashboard = () => {
       </div>
 
       <div className="flex flex-col gap-5">
-        <Card className="bg-primary">
-          <CardHeader>
-            <CardTitle>Today’s prompt:</CardTitle>
-            <CardDescription>
-              How would you like to start your day today?
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
+        {question && (
+          <Card className="p-6 bg-primary">
+            <p className="text-sm text-muted-foreground ">
+              Daily Prompt • {category}
+            </p>
+            <h2 className="text-xl font-semibold m-0">{question}</h2>
+          </Card>
+        )}
         <Form {...form}>
           <form
             id="dashboard-form"
@@ -113,7 +126,7 @@ const Dashboard = () => {
                   <Label className="mb-2 block">Entry</Label>
                   <textarea
                     {...form.register("entry")}
-                    rows={24}
+                    rows={20}
                     className="rounded-2xl w-full p-4"
                     placeholder="Enter your thoughts..."
                   />
