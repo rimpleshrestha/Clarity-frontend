@@ -5,10 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
 const Journal = () => {
-  const { data, isPending, refetch } = useQuery({
+  let { data, isPending, refetch } = useQuery({
     queryKey: ["journals"],
     queryFn: getJournals,
   });
+
   return (
     <div className="flex flex-col gap-5 p-10">
       <h1 className="text-4xl font-semibold text-[#0055E08F]">Your Entries</h1>
@@ -18,12 +19,13 @@ const Journal = () => {
           className="py-5 bg-transparent shadow-none outline-none ring-0 focus-visible:border-none focus-visible:ring-0 focus:ring-0"
         />
       </div>
+
       {isPending && <Loader2 className="mx-auto animate-spin" />}
-      {data?.data?.length > 0 ? (
+      {data?.data.length > 0 ? (
         data.data.map((item: any) => (
           <JournalCard
-            refetch={refetch}
             id={item.id}
+            is_favorate={item.is_favorate}
             title={item.title}
             description={item.entry}
             tag={item.mood.name}

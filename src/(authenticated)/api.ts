@@ -37,4 +37,25 @@ const deleteJournal = async (id: number) => {
   const res = await api.delete(`/journal/${id}`);
   return await res.data;
 };
-export { getMoods, getTags, createJournal, getJournals, deleteJournal };
+const saveJournal = async (id: number) => {
+  const res = await api.patch(`/journal/${id}/save`);
+  return res.data;
+};
+const getSavedJournals = async () => {
+  const res = await api.get("/journal", {
+    params: {
+      is_favorite: true,
+    },
+  });
+  return res.data;
+};
+
+export {
+  getMoods,
+  getTags,
+  createJournal,
+  getJournals,
+  deleteJournal,
+  saveJournal,
+  getSavedJournals,
+};

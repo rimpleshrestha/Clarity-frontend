@@ -5,6 +5,8 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router";
 import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 import { Toaster } from "./components/ui/sonner.tsx";
+import { JournalUnlockProvider } from "./contexts/LockContext.tsx";
+import { UnlockModal } from "./components/UnlockModel.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -18,10 +20,13 @@ createRoot(document.getElementById("root")!).render(
         );
       }}
     >
-      <BrowserRouter>
-        <App />
-        <Toaster />
-      </BrowserRouter>
+      <JournalUnlockProvider>
+        <BrowserRouter>
+          <App />
+          <Toaster />
+        </BrowserRouter>
+        <UnlockModal />
+      </JournalUnlockProvider>
     </ErrorBoundary>
   </StrictMode>
 );
