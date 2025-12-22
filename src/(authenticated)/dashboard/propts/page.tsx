@@ -23,6 +23,7 @@ export const PromptSwipePage = () => {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   const currentPrompt = prompts[currentIndex];
 
@@ -63,6 +64,8 @@ export const PromptSwipePage = () => {
 
     if (currentIndex < prompts.length - 1) {
       setCurrentIndex((i) => i + 1);
+    } else {
+      setShowPopup(true);
     }
   };
 
@@ -125,6 +128,46 @@ export const PromptSwipePage = () => {
           </div>
         </div>
       </div>
+
+      {/* WOW POPUP */}
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl border border-purple-200 flex flex-col items-center"
+              initial={{ y: 100, scale: 0.8, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: 100, scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 120, damping: 15 }}
+            >
+              {/* Gradient Circle Icon */}
+              <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-400 to-blue-400 flex items-center justify-center mb-4 shadow-lg">
+                <Check className="w-10 h-10 text-white" />
+              </div>
+
+              <h2 className="text-xl font-bold text-purple-700 mb-2">
+                You are out of prompts for today!
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Come back tomorrow for more daily prompts to continue your
+                journaling journey.
+              </p>
+
+              <Button
+                className="bg-purple-600 hover:bg-purple-700 text-white w-full shadow-lg"
+                onClick={() => setShowPopup(false)}
+              >
+                Close
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

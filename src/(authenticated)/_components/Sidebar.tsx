@@ -14,7 +14,7 @@ const navlinks = [
     link: "/dashboard/prompts/",
   },
   {
-    name: "Favorites",
+    name: "Favourites",
     link: "/dashboard/favorates/",
   },
   {
