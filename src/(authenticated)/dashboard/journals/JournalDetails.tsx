@@ -105,8 +105,8 @@ export function JournalDetailCard({ data }: JournalDetailProps) {
         </CardHeader>
 
         <CardContent className="mt-4 space-y-6">
-          <p className="text-base leading-relaxed whitespace-pre-wrap">
-            {data.entry}
+          <p dangerouslySetInnerHTML={{ __html: data.entry }} className="text-base leading-relaxed whitespace-pre-wrap">
+          
           </p>
 
           <div className="text-xs text-muted-foreground flex justify-between">

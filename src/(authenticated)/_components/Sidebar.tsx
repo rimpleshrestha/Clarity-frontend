@@ -1,20 +1,17 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { NavLink, useLocation } from "react-router";
-
-
+import { NavLink, useLocation, useNavigate } from "react-router";
 const navlinks = [
   {
     name: "Entries",
     link: "/dashboard/entries",
-    icon: "/entries_icon.svg",
   },
   {
     name: "Prompts",
     link: "/dashboard/prompts/",
   },
   {
-    name: "Favourites",
+    name: "Favorates",
     link: "/dashboard/favorates/",
   },
   {
@@ -24,6 +21,8 @@ const navlinks = [
 ];
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <div className="w-full  bg-[#DEE7FD] rounded-r-2xl  h-full py-20 px-5">
       <div className="flex gap-2 items-center">
@@ -57,6 +56,15 @@ const Sidebar = () => {
           ))}
         </ul>
       </nav>
+      <Button
+        onClick={() => {
+          localStorage.clear();
+          sessionStorage.clear();
+          navigate("/login");
+        }}
+      >
+        Logout
+      </Button>
     </div>
   );
 };

@@ -28,9 +28,21 @@ const createJournal = async (data: any) => {
   console.log(res);
   return await res.data;
 };
+const getQuery = (params: { [key: string]: any }) => {
+  if (params === undefined) return "";
+  const queryString = Object.keys(params)
+    .filter((key) => params[key] !== undefined && params[key] !== null)
+    .map(
+      (key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+    )
+    .join("&");
+  return queryString ? `?${queryString}` : "";
+};
 
-const getJournals = async () => {
-  const res = await api.get("/journal");
+const getJournals = async (query: any) => {
+  const queryString = getQuery(query);
+
+  const res = await api.get("/journal" + queryString);
   return await res.data;
 };
 const deleteJournal = async (id: number) => {
@@ -45,8 +57,8 @@ const upsertPib = async (data: any) => {
   const res = await api.post(`/upsert-pin`, data);
   return res.data;
 };
-const getSavedJournals = async () => {
-  const res = await api.get("/journal", {
+const getSavedJournals = async (query: any) => {
+  const res = await api.get("/journal" + getQuery(query), {
     params: {
       is_favorite: true,
     },

@@ -11,13 +11,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CustomSelect from "@/Test";
 import { useMutation, useQueries } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { createJournal, getMoods, getTags } from "../api";
 import { journalSchema, type JournalType } from "@/utils/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useDailyPromptStore } from "@/utils/store";
+import CustomTextEditor from "@/components/CustomTextEditor";
 
 const Dashboard = () => {
   const form = useForm<JournalType>({
@@ -28,6 +29,7 @@ const Dashboard = () => {
       tag_id: "",
     },
     resolver: zodResolver(journalSchema),
+    mode: "onChange",
   });
 
   const [moodQuery, tagQuery] = useQueries({
@@ -68,7 +70,7 @@ const Dashboard = () => {
     });
   };
   const { question, category } = useDailyPromptStore();
-
+  console.log("watch", form.formState.errors);
   return (
     <div className="p-10">
       <div className="flex my-6 justify-end w-full">
@@ -124,11 +126,24 @@ const Dashboard = () => {
 
                 <div className="mt-4">
                   <Label className="mb-2 block">Entry</Label>
-                  <textarea
-                    {...form.register("entry")}
-                    rows={20}
-                    className="rounded-2xl w-full p-4"
-                    placeholder="Enter your thoughts..."
+                  <Controller
+                    name="entry"
+                    control={form.control}
+                    render={({ field }) => (
+                      <>
+                        <CustomTextEditor
+                          value={field.value} // editor displays current HTML
+                          onChange={(text) => {
+                            field.onChange(text); // RHF sees plain text
+                          }}
+                        />
+                        {form.formState.errors.entry && (
+                          <span className="text-red-500">
+                            {form.formState.errors.entry.message}
+                          </span>
+                        )}
+                      </>
+                    )}
                   />
                 </div>
               </CardContent>

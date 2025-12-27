@@ -39,7 +39,18 @@ const CustomSelect = ({
             value={field.value} // <-- KEEP ID HERE
           >
             <SelectTrigger className="w-[300px] bg-white">
-              {field.value && data.find((item) => item.id == field.value)?.name}{" "}
+              {field.value &&
+                (() => {
+                  const selected = data.find((item) => item.id == field.value);
+                  if (!selected) return null;
+                  return (
+                    <>
+                      {selected.icon ? selected.icon + " " : ""}
+                      {selected.name}
+                    </>
+                  );
+                })()}
+
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
 
