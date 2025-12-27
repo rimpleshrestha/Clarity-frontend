@@ -1,6 +1,7 @@
 import { Cloud, Lightbulb, LockKeyhole } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
+import { Link } from "react-router";
 
 const HomePage = () => {
   return (
@@ -19,7 +20,9 @@ const HomePage = () => {
           A minimal journaling experience designed for focus, privacy, and peace
           of mind. Capture your thoughts in a distraction-free environment.
         </p>
-        <Button className="mt-12">Start Journaling</Button>
+        <Link to="/login">
+          <Button className="mt-12">Start Journaling</Button>
+        </Link>
       </div>
       <div className="grid max-w-7xl gap-12 grid-cols-1 mt-12 md:grid-col-2 lg:grid-cols-3">
         <Card>
