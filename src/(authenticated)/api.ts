@@ -9,7 +9,23 @@ const getTags = async () => {
   const res = await api.get("/tags");
   return await res.data;
 };
-
+export const getJournalById = async (id: string) => {
+  const res = await api.get(`/journal/${id}`);
+  return res.data;
+};
+export const updateJournal = async (data: {
+  id: string;
+  title: string;
+  entry: string;
+  mood_id: number;
+  tag_id: number[];
+}) => {
+  const { id, ...rest } = data;
+  const res = await api.put(`/journal/${id}`, rest, {
+    headers: { "Content-Type": "application/json" },
+  });
+  return res.data;
+};
 const createJournal = async (data: any) => {
   const res = await api.post(
     "/journal",

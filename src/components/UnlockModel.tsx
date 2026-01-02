@@ -1,25 +1,26 @@
+import { useState } from "react";
 import { useJournalUnlock } from "@/contexts/LockContext";
 import api from "@/utils/axios-interceptor";
-import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { Link, useNavigate } from "react-router";
 
 export const UnlockModal = () => {
   const { showModal, unlock } = useJournalUnlock();
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const res = await api.post("/unlock-journal", {
-        pin: pin,
-      });
+      const res = await api.post("/unlock-journal", { pin });
+      const data = res.data;
 
-      const data = await res.data;
-      if (!res.status) throw new Error(data.message);
+      if (!res.status || !data?.data?.["unlock-token"])
+        throw new Error(data?.message || "Invalid PIN");
 
       unlock(data.data["unlock-token"]);
       setPin("");
@@ -54,6 +55,12 @@ export const UnlockModal = () => {
             {loading ? "Unlocking..." : "Unlock"}
           </button>
         </form>
+        <span>
+          Dont have a pin?{" "}
+          <span onClick={() => navigate("/dashboard/settings")}>
+            Click Here
+          </span>
+        </span>
       </div>
     </div>
   );

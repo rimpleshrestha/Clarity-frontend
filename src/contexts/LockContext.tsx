@@ -1,16 +1,12 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  type ReactNode,
-} from "react";
+"use client";
+
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface JournalUnlockContextType {
   unlockToken: string | null;
   isLocked: boolean;
   showModal: boolean;
   unlock: (token: string) => void;
-  lock: () => void;
   requestUnlock: () => Promise<string>;
 }
 
@@ -33,10 +29,8 @@ export const JournalUnlockProvider = ({
     setUnlockToken(token);
     setShowModal(false);
 
-    // Auto-expire after 5 minutes
-    setTimeout(() => {
-      setUnlockToken(null);
-    }, 5 * 60 * 1000);
+    // auto-expire after 5 minutes
+    setTimeout(() => setUnlockToken(null), 5 * 60 * 1000);
 
     if (resolver) {
       resolver(token);
@@ -44,20 +38,11 @@ export const JournalUnlockProvider = ({
     }
   };
 
-  const lock = () => {
-    setUnlockToken(null);
-    setShowModal(true);
-  };
-
   const requestUnlock = (): Promise<string> => {
-    if (unlockToken) {
-      return Promise.resolve(unlockToken);
-    }
+    if (unlockToken) return Promise.resolve(unlockToken);
 
     setShowModal(true);
-    return new Promise((resolve) => {
-      setResolver(() => resolve);
-    });
+    return new Promise((resolve) => setResolver(() => resolve));
   };
 
   return (
@@ -67,7 +52,6 @@ export const JournalUnlockProvider = ({
         isLocked: !unlockToken,
         showModal,
         unlock,
-        lock,
         requestUnlock,
       }}
     >
@@ -78,10 +62,9 @@ export const JournalUnlockProvider = ({
 
 export const useJournalUnlock = () => {
   const context = useContext(JournalUnlockContext);
-  if (!context) {
+  if (!context)
     throw new Error(
       "useJournalUnlock must be used within JournalUnlockProvider"
     );
-  }
   return context;
 };

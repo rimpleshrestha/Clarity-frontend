@@ -16,6 +16,7 @@ interface CustomSelectProps {
   data: any[];
   isLoading?: boolean;
   label?: string;
+  isMulti?: boolean;
 }
 
 const CustomSelect = ({
@@ -24,51 +25,68 @@ const CustomSelect = ({
   placeholder,
   data,
   isLoading = false,
-  label = "How are you feeling?",
+  label = "Select an option",
+  isMulti = false,
 }: CustomSelectProps) => {
-  console.log("CustomSelect data:", data);
   return (
     <div className="flex flex-col gap-2">
       <Label>{label}</Label>
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
-          <Select
-            onValueChange={field.onChange}
-            value={field.value} // <-- KEEP ID HERE
-          >
-            <SelectTrigger className="w-[300px] bg-white">
-              {field.value &&
-                (() => {
-                  const selected = data.find((item) => item.id == field.value);
-                  if (!selected) return null;
-                  return (
-                    <>
-                      {selected.icon ? selected.icon + " " : ""}
-                      {selected.name}
-                    </>
-                  );
-                })()}
+        render={({ field }) => {
+          // For multi-select, value is an array
+          const valueArray = isMulti ? field.value || [] : field.value;
 
-              <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
+          const handleChange = (val: any) => {
+            if (isMulti) {
+              // toggle item in array
+              if (valueArray.includes(val)) {
+                field.onChange(valueArray.filter((v: any) => v !== val));
+              } else {
+                field.onChange([...valueArray, val]);
+              }
+            } else {
+              field.onChange(val);
+            }
+          };
 
-            <SelectContent>
-              {isLoading ? (
-                <span className="flex justify-center items-center py-2">
-                  <Loader2 className="animate-spin text-muted-foreground" />
-                </span>
-              ) : (
-                data?.map((item) => (
-                  <SelectItem key={item.id} value={item.id}>
-                    {item.icon ?? ""} {item.name}
-                  </SelectItem>
-                ))
-              )}
-            </SelectContent>
-          </Select>
-        )}
+          return (
+            <Select value={valueArray} onValueChange={handleChange}>
+              <SelectTrigger className="w-[300px] bg-white">
+                {isMulti
+                  ? valueArray
+                      .map((val: any) => {
+                        const selected = data.find((item) => item.id == val);
+                        return selected ? selected.name : null;
+                      })
+                      .join(", ")
+                  : (() => {
+                      const selected = data.find(
+                        (item) => item.id == valueArray
+                      );
+                      return selected ? selected.name : null;
+                    })()}
+
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+
+              <SelectContent>
+                {isLoading ? (
+                  <span className="flex justify-center items-center py-2">
+                    <Loader2 className="animate-spin text-muted-foreground" />
+                  </span>
+                ) : (
+                  data?.map((item) => (
+                    <SelectItem key={item.id} value={item.id}>
+                      {item.icon ?? ""} {item.name}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          );
+        }}
       />
     </div>
   );

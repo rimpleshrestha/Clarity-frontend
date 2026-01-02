@@ -26,8 +26,8 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <App />
           <Toaster />
+          <UnlockModal />
         </BrowserRouter>
-        <UnlockModal />
       </JournalUnlockProvider>
       {/* </ThemeProvider> */}
     </ErrorBoundary>
