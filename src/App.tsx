@@ -12,6 +12,8 @@ import SettingPage from "./(authenticated)/dashboard/setting/page";
 import Journal from "./(authenticated)/dashboard/journals/page";
 import PromptsPage from "./(authenticated)/dashboard/propts/page";
 import JournalDetail from "./(authenticated)/dashboard/journals/JournalDetails";
+import ProfilePage from "./(authenticated)/dashboard/profile/page";
+import ChangePasswordForm from "./(authenticated)/dashboard/change-password/page";
 const App = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -46,6 +48,8 @@ const App = () => {
           <Route path="favorates" element={<SavedJournal />} />
           <Route path="settings" element={<SettingPage />} />
           <Route path="prompts" element={<PromptsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="change-password" element={<ChangePasswordForm />} />
         </Route>
         <Route element={<Error />} path="*" />
       </Routes>
