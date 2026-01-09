@@ -14,15 +14,13 @@ import PromptsPage from "./(authenticated)/dashboard/propts/page";
 import JournalDetail from "./(authenticated)/dashboard/journals/JournalDetails";
 import ProfilePage from "./(authenticated)/dashboard/profile/page";
 import ChangePasswordForm from "./(authenticated)/dashboard/change-password/page";
+import CommunityPage from "./(authenticated)/dashboard/community/page";
 const App = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 5 * 60 * 60 * 1000, // 👈 milliseconds
+        staleTime: 5 * 60 * 60 * 1000,
         gcTime: 5 * 60 * 60 * 1000,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
       },
     },
   });
@@ -50,6 +48,7 @@ const App = () => {
           <Route path="prompts" element={<PromptsPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="change-password" element={<ChangePasswordForm />} />
+          <Route path="community" element={<CommunityPage />} />
         </Route>
         <Route element={<Error />} path="*" />
       </Routes>

@@ -1,11 +1,6 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +15,8 @@ import { Loader2 } from "lucide-react";
 import { useDailyPromptStore } from "@/utils/store";
 import CustomTextEditor from "@/components/CustomTextEditor";
 
+const STORAGE_KEY = "journal-draft";
+
 const Dashboard = () => {
   const form = useForm<JournalType>({
     defaultValues: {
@@ -31,6 +28,32 @@ const Dashboard = () => {
     resolver: zodResolver(journalSchema),
     mode: "onChange",
   });
+
+  const { question, category } = useDailyPromptStore();
+
+  useEffect(() => {
+    const savedDraft = sessionStorage.getItem(STORAGE_KEY);
+    if (savedDraft) {
+      try {
+        const parsed = JSON.parse(savedDraft);
+        console.log("Parsed", parsed);
+        form.reset(parsed);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [form]);
+
+  useEffect(() => {
+    const subscription = form.watch((values) => {
+      const handler = setTimeout(() => {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+      }, 2000);
+
+      return () => clearTimeout(handler);
+    });
+    return () => subscription.unsubscribe();
+  }, [form.watch]);
 
   const [moodQuery, tagQuery] = useQueries({
     queries: [
@@ -54,23 +77,26 @@ const Dashboard = () => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-journal"],
     mutationFn: createJournal,
+    onSuccess: () => {
+      toast.success("Journal created successfully");
+      sessionStorage.removeItem(STORAGE_KEY);
+      form.reset({
+        title: "",
+        entry: "",
+        mood_id: "",
+        tag_id: "",
+      });
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Error creating journal");
+    },
   });
-  console.log(form.formState.errors);
-  const onSubmit = (values: any) => {
-    console.log(values);
-    mutate(values, {
-      onSuccess: (data) => {
-        console.log("Journal created successfully:", data);
-        toast.success("Journal created successfully");
-      },
-      onError: (error) => {
-        console.error("Error creating journal:", error);
-        toast.error("Error creating journal");
-      },
-    });
+
+  const onSubmit = (values: JournalType) => {
+    mutate(values);
   };
-  const { question, category } = useDailyPromptStore();
-  console.log("watch", form.formState.errors);
+
   return (
     <div className="p-10">
       <div className="flex my-6 justify-end w-full">
@@ -100,9 +126,15 @@ const Dashboard = () => {
                   Title:
                   <Input
                     {...form.register("title")}
-                    className="w-full bg-transparent ring-0 border-none shadow-none"
+                    placeholder="Enter title..."
+                    className="w-full bg-transparent ring-0 border-none shadow-none focus-visible:ring-0"
                   />
                 </CardTitle>
+                {form.formState.errors.title && (
+                  <p className="text-red-500 text-sm">
+                    {form.formState.errors.title.message}
+                  </p>
+                )}
               </CardHeader>
 
               <CardContent>
@@ -132,13 +164,12 @@ const Dashboard = () => {
                     render={({ field }) => (
                       <>
                         <CustomTextEditor
-                          value={field.value} // editor displays current HTML
-                          onChange={(text) => {
-                            field.onChange(text); // RHF sees plain text
-                          }}
+                          value={field.value}
+                          onChange={(text) => field.onChange(text)}
                         />
+
                         {form.formState.errors.entry && (
-                          <span className="text-red-500">
+                          <span className="text-red-500 text-sm mt-1 block">
                             {form.formState.errors.entry.message}
                           </span>
                         )}

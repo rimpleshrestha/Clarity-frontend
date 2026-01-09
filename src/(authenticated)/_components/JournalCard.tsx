@@ -124,7 +124,11 @@ const JournalCard = ({
           <CardTitle className="flex justify-between items-center">
             {title}
             <Star
-              onClick={() => toggleSave(Number(id))}
+              onClick={(e) => {
+                e.preventDefault(); // Prevents the Link from triggering
+                e.stopPropagation();
+                toggleSave(Number(id));
+              }}
               className={cn(
                 "cursor-pointer transition",
                 is_favorate
@@ -141,7 +145,11 @@ const JournalCard = ({
               <Loader2 className="animate-spin" />
             ) : (
               <Trash
-                onClick={() => mutate(Number(id))}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevents the Link from triggering
+                  e.stopPropagation();
+                  mutate(Number(id));
+                }}
                 className="cursor-pointer text-red-600"
               />
             )}

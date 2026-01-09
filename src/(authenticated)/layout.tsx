@@ -3,6 +3,7 @@ import { isAuthenticated } from "@/utils/security";
 import type { ReactNode } from "react";
 import { Link, Navigate, Outlet } from "react-router";
 import Sidebar from "./_components/Sidebar";
+import Header from "./_components/Header";
 
 const ProtectedLayout = () => {
   const auth = isAuthenticated();
@@ -10,11 +11,12 @@ const ProtectedLayout = () => {
 
   return (
     <div className="flex relative min-h-screen">
-      <aside className="w-[400px] h-full fixed left-0 top-0">
+      <Header />
+      <aside className="w-[300px] h-full fixed left-0 top-0">
         <Sidebar />
       </aside>
 
-      <main className="flex-1 min-h-full  w-full ml-[400px] overflow-auto  bg-dashboard-bg">
+      <main className="flex-1 min-h-full  w-full ml-[300px] overflow-auto  bg-dashboard-bg dark:bg-black">
         <Outlet />
       </main>
     </div>

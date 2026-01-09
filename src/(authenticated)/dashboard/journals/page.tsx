@@ -19,7 +19,7 @@ const Journal = () => {
 
   return (
     <div className="flex flex-col gap-5 p-10">
-      <h1 className="text-4xl font-semibold text-[#0055E08F]">Your Entries</h1>
+      <h1 className="text-4xl font-semibold text-[#699BEC]">Your Entries</h1>
       <div className="flex justify-center items-center w rounded-full bg-primary">
         <Input
           placeholder="Search your entries...."

@@ -80,14 +80,16 @@ export function JournalDetailCard({ data }: JournalDetailProps) {
               </p>
             </div>
 
-            <Star
-              className={cn(
-                "w-6 h-6",
-                data.is_favorate
-                  ? "text-yellow-400 fill-yellow-400"
-                  : "text-muted-foreground"
-              )}
-            />
+            {data.is_favorate && (
+              <Star
+                className={cn(
+                  "w-6 h-6",
+                  data.is_favorate
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-muted-foreground"
+                )}
+              />
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -105,9 +107,10 @@ export function JournalDetailCard({ data }: JournalDetailProps) {
         </CardHeader>
 
         <CardContent className="mt-4 space-y-6">
-          <p dangerouslySetInnerHTML={{ __html: data.entry }} className="text-base leading-relaxed whitespace-pre-wrap">
-          
-          </p>
+          <article
+            dangerouslySetInnerHTML={{ __html: data.entry }}
+            className="text-base text-black dark:text-white prose prose-base leading-relaxed whitespace-pre-wrap"
+          ></article>
 
           <div className="text-xs text-muted-foreground flex justify-between">
             <span>Journal ID: {data.id}</span>

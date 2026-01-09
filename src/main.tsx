@@ -21,15 +21,15 @@ createRoot(document.getElementById("root")!).render(
         );
       }}
     >
-      {/* <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme"> */}
-      <JournalUnlockProvider>
-        <BrowserRouter>
-          <App />
-          <Toaster />
-          <UnlockModal />
-        </BrowserRouter>
-      </JournalUnlockProvider>
-      {/* </ThemeProvider> */}
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+        <JournalUnlockProvider>
+          <BrowserRouter>
+            <App />
+            <Toaster /> 
+            <UnlockModal />
+          </BrowserRouter>
+        </JournalUnlockProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   </StrictMode>
 );
