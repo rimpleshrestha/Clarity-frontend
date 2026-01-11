@@ -167,7 +167,7 @@ const ProfilePage = () => {
                 value={name}
                 disabled={!isEditing}
                 onChange={(e) => setName(e.target.value)}
-                className="rounded-xl border-gray-300 h-12 focus-visible:ring-[#433D8B]"
+                className="rounded-xl border-gray-300 text-black h-12 focus-visible:ring-[#433D8B]"
               />
             </div>
 
@@ -178,7 +178,7 @@ const ProfilePage = () => {
               <Input
                 value={user.email}
                 disabled
-                className="rounded-xl border-gray-300 h-12 bg-gray-50 opacity-70"
+                className="rounded-xl border-gray-300 h-12 text-black bg-gray-50 opacity-70"
               />
             </div>
 
@@ -191,7 +191,7 @@ const ProfilePage = () => {
                   value={bio}
                   disabled={!isEditing}
                   onChange={(e) => setBio(e.target.value)}
-                  className="rounded-xl border-gray-300 min-h-[100px] pt-3 focus-visible:ring-[#433D8B] resize-none"
+                  className="rounded-xl border-gray-300 text-black min-h-[100px] pt-3 focus-visible:ring-[#433D8B] resize-none"
                 />
               </div>
             </div>

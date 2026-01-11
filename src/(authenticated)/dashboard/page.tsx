@@ -98,7 +98,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-10">
+    <div className="p-3 lg:p-10 ">
       <div className="flex my-6 justify-end w-full">
         <Button type="submit" disabled={isPending} form="dashboard-form">
           Save Journal {isPending && <Loader2 className="ml-2 animate-spin" />}
@@ -127,7 +127,7 @@ const Dashboard = () => {
                   <Input
                     {...form.register("title")}
                     placeholder="Enter title..."
-                    className="w-full bg-transparent ring-0 border-none shadow-none focus-visible:ring-0"
+                    className="w-full bg-white text-black "
                   />
                 </CardTitle>
                 {form.formState.errors.title && (
@@ -138,10 +138,11 @@ const Dashboard = () => {
               </CardHeader>
 
               <CardContent>
-                <div className="flex gap-5 justify-between items-center">
+                <div className="flex gap-5 max-lg:flex-col max-lg:items-start justify-between items-center">
                   <CustomSelect
                     name="mood_id"
                     control={form.control}
+                    label="Mood"
                     placeholder="Search a mood.."
                     data={moodQuery.data?.data ?? []}
                     isLoading={moodQuery.isPending}
@@ -151,6 +152,7 @@ const Dashboard = () => {
                     name="tag_id"
                     control={form.control}
                     placeholder="Search a tag..."
+                    label="Tag"
                     data={tagQuery.data?.data ?? []}
                     isLoading={tagQuery.isPending}
                   />

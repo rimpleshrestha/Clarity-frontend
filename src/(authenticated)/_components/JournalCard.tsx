@@ -31,23 +31,50 @@ const JournalCard = ({
   const { mutate, isPending } = useMutation({
     mutationFn: deleteJournal,
     onMutate: async (deletedId) => {
+      // 1. Cancel outgoing refetches for both lists
       await queryClient.cancelQueries({ queryKey: ["journals"] });
+      await queryClient.cancelQueries({ queryKey: ["saved-journals"] });
+
+      // 2. Snapshot the previous values
       const previousJournals = queryClient.getQueryData(["journals"]);
-      queryClient.setQueryData(["journals"], (old: any) => ({
-        ...old,
-        data: old.data.filter((item: any) => item.id !== deletedId),
-      }));
-      return { previousJournals };
+      const previousSaved = queryClient.getQueryData(["saved-journals"]);
+
+      // 3. Optimistically update "journals"
+      queryClient.setQueriesData({ queryKey: ["journals"] }, (old: any) => {
+        if (!old) return old;
+        return {
+          ...old,
+          data: old.data.filter((item: any) => item.id !== deletedId),
+        };
+      });
+
+      // 4. Optimistically update "saved-journals"
+      queryClient.setQueriesData(
+        { queryKey: ["saved-journals"] },
+        (old: any) => {
+          if (!old) return old;
+          return {
+            ...old,
+            data: old.data.filter((item: any) => item.id !== deletedId),
+          };
+        }
+      );
+
+      return { previousJournals, previousSaved };
     },
     onSuccess: () => {
-      toast.success("Deleted");
+      toast.success("Deleted successfully");
     },
     onError: (err, deletedId, context) => {
+      // Rollback
       queryClient.setQueryData(["journals"], context?.previousJournals);
+      queryClient.setQueryData(["saved-journals"], context?.previousSaved);
       toast.error("Failed to delete journal");
     },
     onSettled: () => {
+      // 🔥 Crucial: Invalidate ALL queries starting with these keys
       queryClient.invalidateQueries({ queryKey: ["journals"] });
+      queryClient.invalidateQueries({ queryKey: ["saved-journals"] });
     },
   });
   const { mutate: toggleSave, isPending: isSaving } = useMutation({

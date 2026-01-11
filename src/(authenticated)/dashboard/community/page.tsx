@@ -35,8 +35,11 @@ const CommunityPage = () => {
     );
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="my-10">
+    <div className=" w-full lg:max-w-7xl mx-0 lg:mx-auto">
+      <h1 className="text-2xl mb-2 font-bold px-2 lg:px-10 text-card-foreground ">
+        Talk to the Community
+      </h1>
+      <div className="">
         <CommunityForm
           refetch={refetch}
           isEditing={isEditing}
@@ -44,11 +47,11 @@ const CommunityPage = () => {
         />
       </div>
 
-      <h1 className="text-2xl font-bold px-10 text-card-foreground my-6">
+      <h1 className="text-2xl font-bold px-2 lg:px-10 text-card-foreground my-6">
         Recent Updates
       </h1>
 
-      <div className="px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="px-2 lg:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts?.map((post: any) => (
           <PostCard key={post.id} post={post} />
         ))}

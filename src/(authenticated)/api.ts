@@ -20,10 +20,19 @@ export const updateJournal = async (data: {
   mood_id: number;
   tag_id: number[];
 }) => {
-  const { id, ...rest } = data;
-  const res = await api.put(`/journal/${id}`, rest, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const { id } = data;
+  const res = await api.put(
+    `/journal/${id}`,
+    {
+      title: data.title,
+      entry: data.entry,
+      mood_id: Number(data.mood_id),
+      tag_id: [Number(data.tag_id)],
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
   return res.data;
 };
 const createJournal = async (data: any) => {

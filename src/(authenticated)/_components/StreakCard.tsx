@@ -7,7 +7,7 @@ interface StreakCardProps {
 
 export const StreakCard = ({ days }: StreakCardProps) => {
   return (
-    <Card className=" my-2 border-none rounded-none bg-[#422DB5]/12 w-full ">
+    <Card className=" mt-4 border-none rounded-none bg-[#422DB5]/12 w-full ">
       <CardContent className="flex items-center gap-4 ">
         <div className="bg-[#FF704D] p-4 rounded-full">
           <Flame className="text-white fill-white size-4" />

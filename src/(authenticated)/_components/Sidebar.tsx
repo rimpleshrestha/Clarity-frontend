@@ -59,9 +59,9 @@ const Sidebar = () => {
             Clarity
           </span>
         </div>
-        {user?.data?.streak?.currentCount && (
-          <StreakCard days={user.data.streak.currentCount} />
-        )}
+
+        <StreakCard days={user?.data?.streak?.currentCount} />
+
         <div className="px-5">
           {" "}
           <NavLink

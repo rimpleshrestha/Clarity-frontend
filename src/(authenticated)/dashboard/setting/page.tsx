@@ -6,19 +6,25 @@ import SettingCard from "@/(authenticated)/_components/SettingCard";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ModeToggle } from "@/(authenticated)/_components/ModeToggle";
 
 const SettingPage = () => {
   const [otpOpen, setOtpOpen] = useState(false);
   const [reminderOpen, setReminderOpen] = useState(false);
+
+  // State to track if the reminder is enabled in session storage
+  const [isReminderEnabled, setIsReminderEnabled] = useState(false);
+
+  // Sync the switch state with sessionStorage whenever the dialog opens/closes
+  // or when the component initially mounts
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedStatus = sessionStorage.getItem("reminderEnabled") === "true";
+      setIsReminderEnabled(savedStatus);
+    }
+  }, [reminderOpen]);
 
   return (
     <main className="p-20 ">
@@ -60,7 +66,8 @@ const SettingPage = () => {
             {/* Dialog Trigger */}
             <Dialog open={reminderOpen} onOpenChange={setReminderOpen}>
               <DialogTrigger asChild>
-                <Switch />
+                {/* The checked prop is now tied to the session storage state */}
+                <Switch checked={isReminderEnabled} />
               </DialogTrigger>
               <DialogContent className="sm:max-w-[500px]">
                 <DailyReminderCard />

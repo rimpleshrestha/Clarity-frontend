@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 export const UnlockModal = () => {
-  const { showModal, unlock } = useJournalUnlock();
+  const { showModal, unlock, closeModal } = useJournalUnlock();
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,6 +24,7 @@ export const UnlockModal = () => {
 
       unlock(data.data["unlock-token"]);
       setPin("");
+      closeModal();
     } catch (err: any) {
       setError(err.message || "Invalid PIN");
     } finally {
@@ -57,7 +58,12 @@ export const UnlockModal = () => {
         </form>
         <span>
           Dont have a pin?{" "}
-          <span onClick={() => navigate("/dashboard/settings")}>
+          <span
+            onClick={() => {
+              navigate("/dashboard/settings");
+              closeModal();
+            }}
+          >
             Click Here
           </span>
         </span>
