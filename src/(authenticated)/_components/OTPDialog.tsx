@@ -34,13 +34,14 @@ export const OtpDialog = ({
     resolver: zodResolver(otpSchema),
   });
 
-  const { mutate } = useMutation({
+  const {isPending, mutate } = useMutation({
     mutationFn: upsertPib,
   });
   const onSubmit = (data: OtpFormValues) => {
     mutate(data, {
       onSuccess: () => {
-        toast.success("Mutated");
+        toast.success("Pin has been changed");
+        onOpenChange(false);
       },
     });
   };
@@ -65,8 +66,8 @@ export const OtpDialog = ({
             <p className="text-sm text-red-500">{errors.pin.message}</p>
           )}
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            Verify
+          <Button type="submit" className="w-full" disabled={isPending}>
+            Verify {isPending && "..."}
           </Button>
         </form>
       </DialogContent>

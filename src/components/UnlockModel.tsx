@@ -60,7 +60,7 @@ export const UnlockModal = () => {
           Dont have a pin?{" "}
           <span
             onClick={() => {
-              navigate("/dashboard/settings");
+              navigate("/dashboard/settings", { replace: true });
               closeModal();
             }}
           >

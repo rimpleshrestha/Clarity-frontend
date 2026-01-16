@@ -2,7 +2,7 @@ import z from "zod";
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
+  password: z.string().min(4, "Password must be at least  4 characters long"),
 });
 type LoginType = z.infer<typeof loginSchema>;
 const signupSchema = z

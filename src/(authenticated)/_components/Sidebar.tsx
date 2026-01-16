@@ -31,7 +31,7 @@ const navlinks = [
   },
   {
     name: "Favorites",
-    link: "/dashboard/favorates/",
+    link: "/dashboard/favorites",
     icon: <Star className="size-4" />,
   },
   {
@@ -94,9 +94,10 @@ const Sidebar = () => {
         <Button
           className="w-full"
           onClick={() => {
+            localStorage.removeItem("access_token");
             localStorage.clear();
             sessionStorage.clear();
-            navigate("/login");
+            navigate("/login",{replace: true});
           }}
         >
           <DoorOpen /> Logout

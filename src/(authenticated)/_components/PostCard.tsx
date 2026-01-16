@@ -10,6 +10,7 @@ import {
 import { deletePost, toggleLike } from "../dashboard/community/api";
 import { useNavigate } from "react-router";
 import { Card } from "@/components/ui/card";
+import {jwtDecode} from "jwt-decode";
 
 const PostCard = ({ post }: any) => {
   const queryClient = useQueryClient();
@@ -75,7 +76,8 @@ const PostCard = ({ post }: any) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
-
+const {user_id} = jwtDecode(localStorage.getItem("access_token") || "");
+const isAuthor = user_id === post.author.id;
   return (
     <Card className=" rounded-3xl p-5  flex flex-col gap-4">
       <div className="flex justify-between">
@@ -89,27 +91,29 @@ const PostCard = ({ post }: any) => {
             <p className="font-bold text-card-foreground">{post.author.name}</p>
           </div>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="outline-none">
-            <MoreVertical size={18} className="text-slate-400" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() =>
-                router(`/dashboard/community?edit=true&id=${post.id}`)
-              }
-              className="cursor-pointer"
-            >
-              <Edit2 size={14} className="mr-2" /> Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => deleteMutate.mutate()}
-              className="text-red-600 cursor-pointer"
-            >
-              <Trash2 size={14} className="mr-2" /> Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {isAuthor && (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="outline-none">
+              <MoreVertical size={18} className="text-slate-400" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() =>
+                  router(`/dashboard/community?edit=true&id=${post.id}`)
+                }
+                className="cursor-pointer"
+              >
+                <Edit2 size={14} className="mr-2" /> Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => deleteMutate.mutate()}
+                className="text-red-600 cursor-pointer"
+              >
+                <Trash2 size={14} className="mr-2" /> Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       <p className="text-card-foreground leading-relaxed">{post.content}</p>

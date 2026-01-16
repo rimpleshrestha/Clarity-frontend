@@ -34,7 +34,8 @@ const HomePage = () => {
           <CardContent className="text-[#6B6B6B]">
             <span className="text-center block">Private & Secure</span>
             <span className="text-center block">
-              Your thoughts are safe here. Optional PIN lock and local storage
+              Your thoughts are safe here. 
+               PIN lock and local storage
               keep your entries protected.
             </span>
           </CardContent>

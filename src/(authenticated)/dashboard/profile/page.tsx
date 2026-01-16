@@ -3,10 +3,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"; // Added for the motto/bio
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useProfileMutations } from "@/hooks/useProfileMutations";
-import { getMe } from "./user-api";
+import { deleteUserAccount, getMe } from "./user-api";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +26,15 @@ const ProfilePage = () => {
   });
 
   const user = data?.user;
-
+  const {mutate,isPending} = useMutation({
+    mutationFn:deleteUserAccount,
+    onSuccess:()=>{
+      toast.success("Account deleted successfully");
+      localStorage.clear();
+      window.location.href = "/";
+      sessionStorage.clear();
+    }
+  })
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
@@ -235,11 +243,12 @@ const ProfilePage = () => {
                     <Button
                       variant="destructive"
                       className="w-full"
+                      disabled={isPending}
                       onClick={() => {
-                        toast.error("Account deletion not implemented yet.");
+                  mutate();
                       }}
                     >
-                      Yes, Delete My Account
+                      Yes, Delete My Account {isPending ? "..." : ""}
                     </Button>
                   </div>
                 </DialogContent>

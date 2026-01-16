@@ -1,15 +1,10 @@
 function JournalDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { requestUnlock, unlockToken } = useJournalUnlock();
+  const { requestUnlock, unlockToken, closeModal } = useJournalUnlock();
   const [isEditing, setIsEditing] = useState(false);
 
   // 1. Auto-trigger unlock modal if token is missing
-  useEffect(() => {
-    if (!unlockToken) {
-      requestUnlock();
-    }
-  }, [unlockToken, requestUnlock]);
 
   // 2. Fetch Journal Data
   const { data: journal, isLoading } = useQuery({
@@ -54,7 +49,19 @@ function JournalDetail() {
     },
     onError: () => toast.error("Failed to update journal"),
   });
-
+  if (!unlockToken) {
+    return (
+      <div className="p-20 text-center">
+        <Button
+          onClick={() => {
+            requestUnlock();
+          }}
+        >
+          Unlock to View/Edit
+        </Button>
+      </div>
+    );
+  }
   // Loading State
   if (isLoading || !journal) {
     return (

@@ -72,10 +72,10 @@ const Signup = () => {
         <div className="relative isolate flex flex-col items-center">
           <CardHeader className="flex flex-col items-center relative w-full">
             <img src="logo.png" className="size-10" />
-            <CardTitle className="mt-4 text-3xl font-medium tracking-wide">
+            <CardTitle className="mt-4 text-black dark:text-white text-3xl font-medium tracking-wide">
               Create Account
             </CardTitle>
-            <span className="text-sm mb-7 block text-muted-foreground">
+            <span className="text-sm mb-7  block text-muted-foreground">
               Start your journaling journey
             </span>
           </CardHeader>
@@ -91,12 +91,12 @@ const Signup = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-black dark:text-white">Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="rimple@gmail.com"
-                          className="w-full"
+                          className="w-full text-black dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -109,7 +109,7 @@ const Signup = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="text-black dark:text-white">Password</FormLabel>
                       <FormControl>
                         <div className="relative ">
                           <Input
@@ -117,7 +117,7 @@ const Signup = () => {
                               togglePasswordVisibility ? "text" : "password"
                             }
                             placeholder="**********"
-                            className="w-full"
+                            className="w-full text-black dark:text-white"
                             {...field}
                           />
                           {togglePasswordVisibility ? (
@@ -146,7 +146,7 @@ const Signup = () => {
                   name="confirm_password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+                      <FormLabel className="text-black dark:text-white">Confirm Password</FormLabel>
                       <FormControl>
                         <div className="relative ">
                           <Input
@@ -187,9 +187,9 @@ const Signup = () => {
           </CardContent>
           <CardFooter className="flex flex-col items-center px-0 ">
             <div className="mt-5 space-y-5">
-              <p className="text-[14px] text-center">
+              <p className="text-[14px] text-black dark:text-white text-center">
                 Already have an account?
-                <Link to="/login" className="ml-1 text-primary">
+                <Link to="/login" className="ml-1 text-black dark:text-white">
                   Log in
                 </Link>
               </p>

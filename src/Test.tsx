@@ -53,7 +53,7 @@ const CustomSelect = ({
 
           return (
             <Select value={valueArray} onValueChange={handleChange}>
-              <SelectTrigger className="w-[300px] bg-white">
+              <SelectTrigger className="w-[300px] text-black dark:text-white bg-white">
                 {isMulti
                   ? valueArray
                       .map((val: any) => {
@@ -78,7 +78,7 @@ const CustomSelect = ({
                   </span>
                 ) : (
                   data?.map((item) => (
-                    <SelectItem key={item.id} value={item.id}>
+                    <SelectItem key={item.id} className="text-black dark:text-white" value={item.id}>
                       {item.icon ?? ""} {item.name}
                     </SelectItem>
                   ))

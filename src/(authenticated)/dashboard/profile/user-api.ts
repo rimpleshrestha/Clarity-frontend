@@ -62,11 +62,15 @@ const changePassword = async (data: {
 
   return res.data;
 };
-
+const deleteUserAccount = async () => {
+  const res = await api.delete("/user/delete-account");
+  return res.data;
+};
 export {
   getMe,
   updateUserDetails,
   updateProfileImage,
   updateCoverImage,
   changePassword,
+  deleteUserAccount,
 };

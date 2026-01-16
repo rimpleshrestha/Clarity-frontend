@@ -42,6 +42,9 @@ const Journal = () => {
         mood_id: moodId !== "all" ? moodId : undefined,
         tag_id: tagId !== "all" ? tagId : undefined,
       }),
+    staleTime: 0, // Data is immediately stale
+    gcTime: 0, // (Optional) Remove data from cache as soon as component unmounts
+    refetchOnMount: "always", // Force a refetch every single time the component mounts
   });
 
   const updateFilters = (key: string, value: string) => {
